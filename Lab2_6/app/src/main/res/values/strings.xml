@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">Lab2_TestRecyclerView</string>
+    <string name="element_text">abcd</string>
+    <string name="staff">staff</string>
+</resources>
