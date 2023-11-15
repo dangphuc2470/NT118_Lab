@@ -5,33 +5,43 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <LinearLayout
+    <androidx.cardview.widget.CardView
         android:layout_width="409dp"
         android:layout_height="wrap_content"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:weightSum="5"
-        >
+        tools:layout_editor_absoluteX="1dp"
+        tools:layout_editor_absoluteY="223dp" >
 
-
-        <TextView
-            android:id="@+id/tvSpinner"
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="40dp"
-            android:layout_weight="4"
-            android:gravity="start"
-            android:text="TextView"
-            android:textSize="20sp" />
+            android:layout_height="match_parent">
 
-        <ImageView
-            android:id="@+id/ivSpinner"
-            android:layout_width="wrap_content"
-            android:layout_height="40dp"
-            android:layout_weight="1"
-            tools:srcCompat="@drawable/first_thumbnail"
-            android:layout_gravity="end"/>
+            <TextView
+                android:id="@+id/tvSpinner"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_weight="4"
+                android:gravity="start"
+                android:text="TextView"
+                android:textSize="20sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/ivSpinner"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:layout_constraintHorizontal_weight="4" />
 
-    </LinearLayout>
+            <ImageView
+                android:id="@+id/ivSpinner"
+                android:layout_width="107dp"
+                android:layout_height="50dp"
+                android:layout_gravity="end"
+                android:layout_marginEnd="24dp"
+                android:layout_weight="1"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/tvSpinner"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:srcCompat="@drawable/first_thumbnail" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.cardview.widget.CardView>
 </androidx.constraintlayout.widget.ConstraintLayout>
