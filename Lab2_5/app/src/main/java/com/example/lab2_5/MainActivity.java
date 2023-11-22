@@ -21,7 +21,7 @@ import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity
 {
-    String selectedItemText;
+    int selectedItemIndex;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -51,7 +51,16 @@ public class MainActivity extends AppCompatActivity
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id)
             {
                 // Retrieve the selected item
-                selectedItemText = ((TextView) view.findViewById(R.id.tvSpinner)).getText().toString();
+                String selectedItemText = ((TextView) view.findViewById(R.id.tvSpinner)).getText().toString();
+                if (selectedItemText.equals(THUMBNAIL_1.getName()))
+                    selectedItemIndex = 0;
+                else if (selectedItemText.equals(THUMBNAIL_2.getName()))
+                    selectedItemIndex = 1;
+                else if (selectedItemText.equals(THUMBNAIL_3.getName()))
+                    selectedItemIndex = 2;
+                else
+                    selectedItemIndex = 3;
+
                 // Do something with the selected item
                 //Toast.makeText(null, selectedItemText, Toast.LENGTH_SHORT);
             }
@@ -66,7 +75,7 @@ public class MainActivity extends AppCompatActivity
         Button btAdd = findViewById(R.id.btAddDish);
         btAdd.setOnClickListener((v ->
         {
-            Dish dish = new Dish(editText.getText().toString(), thumbnails[]);
+            Dish dish = new Dish(editText.getText().toString(), thumbnails.get(selectedItemIndex));
             dishes.add(dish);
             adapter.notifyDataSetChanged();
         }));
