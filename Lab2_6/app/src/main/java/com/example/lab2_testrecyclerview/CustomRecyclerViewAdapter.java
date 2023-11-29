@@ -53,6 +53,8 @@ public class CustomRecyclerViewAdapter extends RecyclerView.Adapter<CustomRecycl
 
         }
 
+
+
         public TextView getTextViewRole()
         {
             return tvRole;

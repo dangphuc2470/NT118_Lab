@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Margin -->
+    <dimen name="margin_base">5dp</dimen>
+    <dimen name="margin_basex2">10dp</dimen>
+    <!-- Text Size -->
+    <dimen name="text_medium">16sp</dimen>
+    <!-- Image Size -->
+    <dimen name="image_base">100dp</dimen>
+</resources>
