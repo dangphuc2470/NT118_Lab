@@ -33,20 +33,18 @@ public class MainActivity extends AppCompatActivity {
                 (this, android.R.layout.simple_list_item_1, names);
         lvPerson.setAdapter(adapter);
 
-        TextView tvSelection = (TextView)findViewById(R.id.tvSelection);
+        TextView tvSelection = findViewById(R.id.tvSelection);
 
         lvPerson.setOnItemClickListener(
-                new AdapterView.OnItemClickListener() {
-                    public void onItemClick(AdapterView<?>
-                                                    parent, View view, int position, long id) {
-                        //đối số arg2 là vị trí phần tử trong DataSource (arr)
+                (parent, view, position, id) ->
+                {
+                    //đối số arg2 là vị trí phần tử trong DataSource (arr)
 
-                        tvSelection.setText("position :" + position + "; value =" + names.get(position));
-                    }
+                    tvSelection.setText("position :" + position + "; value =" + names.get(position));
                 });
 
-        Button btInput = (Button)findViewById(R.id.btInput);
-        EditText etInput = (EditText)findViewById(R.id.etInput);
+        Button btInput = findViewById(R.id.btInput);
+        EditText etInput = findViewById(R.id.etInput);
         btInput.setBackgroundColor(Color.argb(255,73,103,39));
         //@Override
         btInput.setOnClickListener(v -> {
