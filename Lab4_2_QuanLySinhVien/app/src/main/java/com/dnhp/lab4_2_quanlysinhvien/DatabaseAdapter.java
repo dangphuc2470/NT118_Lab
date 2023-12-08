@@ -32,20 +32,24 @@ public class DatabaseAdapter {
     }
 
     //Todo: Sửa lại hết bên dưới
-    public long createUser(String name) {
+    public long createStudent(String id, String name, String yob, String cl)
+    {
         ContentValues inititalValues = new ContentValues();
-        inititalValues.put(KEY_NAME, name);
+        inititalValues.put(COLUMN_ID, id);
+        inititalValues.put(COLUMN_NAME, name);
+        inititalValues.put(COLUMN_YEAR_OF_BIRTH, yob);
+        inititalValues.put(COLUMN_CLASS_NAME, cl);
         return sqLiteDatabase.insert(TABLE_NAME, null, inititalValues);
     }
-    public boolean deleteUser(long rowId) {
-        return sqLiteDatabase.delete(TABLE_NAME, KEY_ID + "=" + rowId,
+    public boolean deleteStudent(long rowId) {
+        return sqLiteDatabase.delete(TABLE_NAME, COLUMN_ID + "=" + rowId,
                 null) > 0;
     }
-    public boolean deleteAllUsers() {
+    public boolean deleteAllStudents() {
         return sqLiteDatabase.delete(TABLE_NAME, null, null) > 0;
     }
-    public Cursor getAllUsers() {
-        return sqLiteDatabase.query(TABLE_NAME, new String[]{KEY_ID,
-                KEY_NAME}, null, null, null, null, null);
+    public Cursor getAllStudents() {
+        return sqLiteDatabase.query(TABLE_NAME, new String[]{COLUMN_ID,
+                COLUMN_NAME}, null, null, null, null, null);
     }
 }
