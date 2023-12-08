@@ -13,10 +13,10 @@ public class DatabaseAdapter {
 
     private static final String DATABASE_NAME = "students.db";
     private static final String TABLE_NAME = "students";
-    private static final String COLUMN_ID = "_id";
-    private static final String COLUMN_NAME = "full_name";
-    private static final String COLUMN_YEAR_OF_BIRTH = "year_of_birth";
-    private static final String COLUMN_CLASS_NAME = "class_name";
+    public static final String COLUMN_ID = "_id";
+    public static final String COLUMN_NAME = "full_name";
+    public static final String COLUMN_YEAR_OF_BIRTH = "year_of_birth";
+    public static final String COLUMN_CLASS_NAME = "class_name";
 
     public DatabaseAdapter(Context context) {
         this.context = context;
@@ -32,14 +32,14 @@ public class DatabaseAdapter {
     }
 
     //Todo: Sửa lại hết bên dưới
-    public long createStudent(String id, String name, String yob, String cl)
+    public void createStudent(Student student)
     {
         ContentValues inititalValues = new ContentValues();
-        inititalValues.put(COLUMN_ID, id);
-        inititalValues.put(COLUMN_NAME, name);
-        inititalValues.put(COLUMN_YEAR_OF_BIRTH, yob);
-        inititalValues.put(COLUMN_CLASS_NAME, cl);
-        return sqLiteDatabase.insert(TABLE_NAME, null, inititalValues);
+        inititalValues.put(COLUMN_ID, student.getStudentId());
+        inititalValues.put(COLUMN_NAME, student.getFullName());
+        inititalValues.put(COLUMN_YEAR_OF_BIRTH, student.getYearOfBirth());
+        inititalValues.put(COLUMN_CLASS_NAME, student.getYearOfBirth());
+        sqLiteDatabase.insert(TABLE_NAME, null, inititalValues);
     }
     public boolean deleteStudent(long rowId) {
         return sqLiteDatabase.delete(TABLE_NAME, COLUMN_ID + "=" + rowId,
@@ -50,6 +50,6 @@ public class DatabaseAdapter {
     }
     public Cursor getAllStudents() {
         return sqLiteDatabase.query(TABLE_NAME, new String[]{COLUMN_ID,
-                COLUMN_NAME}, null, null, null, null, null);
+                COLUMN_NAME, COLUMN_YEAR_OF_BIRTH, COLUMN_CLASS_NAME}, null, null, null, null, null);
     }
 }

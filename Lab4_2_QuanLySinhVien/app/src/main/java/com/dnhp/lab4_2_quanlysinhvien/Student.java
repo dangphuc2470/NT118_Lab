@@ -15,6 +15,8 @@ public class Student
         this.className = className;
     }
 
+    public Student(){}
+
     public int getStudentId()
     {
         return studentId;

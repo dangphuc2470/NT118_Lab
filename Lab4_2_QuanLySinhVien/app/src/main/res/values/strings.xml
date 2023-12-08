@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">Lab4_2_QuanLySinhVien</string>
+    <string name="student_manager">Student Manager</string>
+    <string name="id">ID</string>
+    <string name="name">Name</string>
+    <string name="_class">Class</string>
+    <string name="year_of_birth">Year of Birth</string>
 </resources>

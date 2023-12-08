@@ -4,8 +4,10 @@ plugins {
 
 android {
     namespace = "com.dnhp.lab4_2_quanlysinhvien"
-    compileSdk = 33
-
+    compileSdk = 34
+    buildFeatures {
+        viewBinding = true
+    }
     defaultConfig {
         applicationId = "com.dnhp.lab4_2_quanlysinhvien"
         minSdk = 31
