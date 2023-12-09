@@ -4,6 +4,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -16,10 +17,14 @@ import java.util.ArrayList;
 public class CustomRecyclerViewAdapter extends RecyclerView.Adapter<CustomRecyclerViewAdapter.ViewHolder>
 {
 
+
     static ArrayList<Student> arr;
-    public CustomRecyclerViewAdapter(ArrayList<Student> dataSet)
+    private CustomRecyclerViewAdapter.OnItemClickListener listener;
+
+    public CustomRecyclerViewAdapter(ArrayList<Student> dataSet, CustomRecyclerViewAdapter.OnItemClickListener listener)
     {
         arr = dataSet;
+        this.listener = listener;
     }
 
     public static void updateData(Student e)
@@ -79,13 +84,16 @@ public class CustomRecyclerViewAdapter extends RecyclerView.Adapter<CustomRecycl
         {
             return constraintLayout;
         }
+
+
     }
+
 
     /**
      * Initialize the dataset of the Adapter.
-     *
+     * <p>
      * param dataSet String[] containing the data to populate views to be used
-     *                by RecyclerView.
+     * by RecyclerView.
      */
 
     // Create new views (invoked by the layout manager)
@@ -115,6 +123,14 @@ public class CustomRecyclerViewAdapter extends RecyclerView.Adapter<CustomRecycl
 
 
         Log.i("ABC", "onBindViewHolder: " + position);
+        viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (listener != null) {
+                    listener.onItemClick(position);
+                }
+            }
+        });
     }
 
     // Return the size of your dataset (invoked by the layout manager)
@@ -122,5 +138,10 @@ public class CustomRecyclerViewAdapter extends RecyclerView.Adapter<CustomRecycl
     public int getItemCount()
     {
         return arr.size();
+    }
+
+    // Interface for item click listener
+    public interface OnItemClickListener {
+        void onItemClick(int position);
     }
 }

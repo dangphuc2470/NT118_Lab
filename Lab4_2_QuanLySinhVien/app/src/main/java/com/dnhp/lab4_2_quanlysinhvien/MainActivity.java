@@ -8,11 +8,12 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.content.DialogInterface;
 import android.database.Cursor;
 import android.os.Bundle;
-import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Toast;
 
 import com.dnhp.lab4_2_quanlysinhvien.databinding.ActivityMainBinding;
+import com.dnhp.lab4_2_quanlysinhvien.databinding.CustomAlertDialogBinding;
 import com.dnhp.lab4_2_quanlysinhvien.databinding.RecyclerViewItemBinding;
 
 import java.util.ArrayList;
@@ -23,14 +24,14 @@ public class MainActivity extends AppCompatActivity
     private Cursor cursor;
     private ArrayList<Student> students;
     private ActivityMainBinding AMBinding;
-    private RecyclerViewItemBinding recyclerViewItemBinding;
+    private CustomAlertDialogBinding alertDialogBinding;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
         AMBinding = ActivityMainBinding.inflate(getLayoutInflater());
-        recyclerViewItemBinding = RecyclerViewItemBinding.inflate(getLayoutInflater());
+        alertDialogBinding = CustomAlertDialogBinding.inflate(getLayoutInflater());
         setContentView(AMBinding.getRoot());
 
         databaseAdapter = new DatabaseAdapter(this);
@@ -78,14 +79,8 @@ public class MainActivity extends AppCompatActivity
 
         });
 
-        AMBinding.rsView.setOnClickListener(view ->
-        {
-            // Show dialog with item details
-            showItemDetailsDialog(position);
-        });
 
     }
-
     private ArrayList<Student> getData()
     {
         ArrayList<Student> students = new ArrayList<>();
@@ -110,13 +105,26 @@ public class MainActivity extends AppCompatActivity
 
     private void showData(ArrayList<Student> students)
     {
-        RecyclerView recyclerView = findViewById(R.id.rsView);
-        CustomRecyclerViewAdapter adapter = new CustomRecyclerViewAdapter(students);
-        recyclerView.setAdapter(adapter);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        AMBinding.rsView.setLayoutManager(new LinearLayoutManager(this));
+        CustomRecyclerViewAdapter adapter = new CustomRecyclerViewAdapter(students, new CustomRecyclerViewAdapter.OnItemClickListener()
+        {
+            @Override
+            public void onItemClick(int position)
+            {
+                Student clickedItem = students.get(position);
+                showItemDetailsDialog(position);
+            }
+        });
+        AMBinding.rsView.setAdapter(adapter);
+
+//        RecyclerView recyclerView = findViewById(R.id.rsView);
+//        CustomRecyclerViewAdapter adapter = new CustomRecyclerViewAdapter(students);
+//        recyclerView.setAdapter(adapter);
+//        recyclerView.setLayoutManager(new LinearLayoutManager(this));
     }
 
-    private void showItemDetailsDialog(int position) {
+    private void showItemDetailsDialog(int position)
+    {
         AlertDialog.Builder builder = new AlertDialog.Builder(getApplicationContext());
         builder.setTitle("Details");
 
@@ -129,14 +137,51 @@ public class MainActivity extends AppCompatActivity
         builder.setMessage(detailMessage);
 
         // Set up a button to dismiss the dialog
-        builder.setPositiveButton("Close", new DialogInterface.OnClickListener() {
+        builder.setPositiveButton("Close", new DialogInterface.OnClickListener()
+        {
             @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
+            public void onClick(DialogInterface dialogInterface, int i)
+            {
                 dialogInterface.dismiss();
             }
         });
 
         // Show the dialog
+        AlertDialog dialog = builder.create();
+        dialog.show();
+    }
+
+    private void showCustomAlertDialog()
+    {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        LayoutInflater inflater = getLayoutInflater();
+        View dialogView = inflater.inflate(R.layout.custom_alert_dialog, null);
+
+
+//        // Thiết lập dữ liệu hoặc sự kiện cho các thành phần trong Dialog
+//        textView1.setText("Text 1");
+//        textView2.setText("Text 2");
+//        imageView.setImageResource(R.drawable.your_image); // Thay your_image bằng ID của hình ảnh bạn muốn hiển thị
+//
+//        button1.setOnClickListener(new View.OnClickListener()
+//        {
+//            @Override
+//            public void onClick(View v)
+//            {
+//                // Xử lý khi button1 được nhấn
+//            }
+//        });
+//
+//        button2.setOnClickListener(new View.OnClickListener()
+//        {
+//            @Override
+//            public void onClick(View v)
+//            {
+//                // Xử lý khi button2 được nhấn
+//            }
+//        });
+
+        builder.setView(dialogView);
         AlertDialog dialog = builder.create();
         dialog.show();
     }
