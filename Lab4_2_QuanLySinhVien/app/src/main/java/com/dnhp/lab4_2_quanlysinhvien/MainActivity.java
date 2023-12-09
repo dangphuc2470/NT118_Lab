@@ -1,12 +1,15 @@
 package com.dnhp.lab4_2_quanlysinhvien;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.DialogInterface;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.Toast;
 
 import com.dnhp.lab4_2_quanlysinhvien.databinding.ActivityMainBinding;
@@ -47,6 +50,11 @@ public class MainActivity extends AppCompatActivity
             arrayList.add(AMBinding.etYoB.getText().toString());
             arrayList.add(AMBinding.etClass.getText().toString());
 
+            if (databaseAdapter.checkIfIdExists(Integer.parseInt(arrayList.get(0))))
+            {
+                Toast.makeText(getApplicationContext(), "Dữ liệu bị trùng", Toast.LENGTH_SHORT).show();
+                return;
+            }
             try
             {
                 Student student = new Student();
@@ -68,6 +76,12 @@ public class MainActivity extends AppCompatActivity
                 Toast.makeText(getApplicationContext(), "Dữ liệu bị sai", Toast.LENGTH_SHORT).show();
             }
 
+        });
+
+        AMBinding.rsView.setOnClickListener(view ->
+        {
+            // Show dialog with item details
+            showItemDetailsDialog(position);
         });
 
     }
@@ -101,5 +115,31 @@ public class MainActivity extends AppCompatActivity
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
     }
+
+    private void showItemDetailsDialog(int position) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(getApplicationContext());
+        builder.setTitle("Details");
+
+        // Get item details based on position
+        Student item = students.get(position);
+
+        // Construct detail message based on item details
+        String detailMessage = "ID: " + item.getStudentId() + "\nName: " + item.getFullName() + "\nOther details...";
+
+        builder.setMessage(detailMessage);
+
+        // Set up a button to dismiss the dialog
+        builder.setPositiveButton("Close", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                dialogInterface.dismiss();
+            }
+        });
+
+        // Show the dialog
+        AlertDialog dialog = builder.create();
+        dialog.show();
+    }
+
 }
 

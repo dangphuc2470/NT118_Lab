@@ -5,7 +5,8 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
-public class DatabaseAdapter {
+public class DatabaseAdapter
+{
     private DatabaseHelper dbHelper;
     private SQLiteDatabase sqLiteDatabase;
     private static final int DATABASE_VERSION = 2;
@@ -18,16 +19,21 @@ public class DatabaseAdapter {
     public static final String COLUMN_YEAR_OF_BIRTH = "year_of_birth";
     public static final String COLUMN_CLASS_NAME = "class_name";
 
-    public DatabaseAdapter(Context context) {
+    public DatabaseAdapter(Context context)
+    {
         this.context = context;
     }
-    public DatabaseAdapter open() {
+
+    public DatabaseAdapter open()
+    {
         dbHelper = new DatabaseHelper(context, DATABASE_NAME, null,
                 DATABASE_VERSION);
         sqLiteDatabase = dbHelper.getWritableDatabase();
         return this;
     }
-    public void close() {
+
+    public void close()
+    {
         dbHelper.close();
     }
 
@@ -38,18 +44,33 @@ public class DatabaseAdapter {
         inititalValues.put(COLUMN_ID, student.getStudentId());
         inititalValues.put(COLUMN_NAME, student.getFullName());
         inititalValues.put(COLUMN_YEAR_OF_BIRTH, student.getYearOfBirth());
-        inititalValues.put(COLUMN_CLASS_NAME, student.getYearOfBirth());
+        inititalValues.put(COLUMN_CLASS_NAME, student.getClassName());
         sqLiteDatabase.insert(TABLE_NAME, null, inititalValues);
     }
-    public boolean deleteStudent(long rowId) {
+
+    public boolean deleteStudent(long rowId)
+    {
         return sqLiteDatabase.delete(TABLE_NAME, COLUMN_ID + "=" + rowId,
                 null) > 0;
     }
-    public boolean deleteAllStudents() {
-        return sqLiteDatabase.delete(TABLE_NAME, null, null) > 0;
+
+    public void deleteAllStudents()
+    {
+        sqLiteDatabase.delete(TABLE_NAME, null, null);
     }
-    public Cursor getAllStudents() {
+
+    public Cursor getAllStudents()
+    {
         return sqLiteDatabase.query(TABLE_NAME, new String[]{COLUMN_ID,
                 COLUMN_NAME, COLUMN_YEAR_OF_BIRTH, COLUMN_CLASS_NAME}, null, null, null, null, null);
+    }
+
+    public boolean checkIfIdExists(int id)
+    {
+        //Cursor cursor = db.rawQuery("SELECT * FROM students WHERE _id = ?", new String[]{String.valueOf(id)});
+        Cursor cursor = sqLiteDatabase.query(TABLE_NAME, null, COLUMN_ID + " = ?", new String[]{String.valueOf(id)}, null, null, null);
+        boolean exists = (cursor.getCount() > 0);
+        cursor.close();
+        return exists;
     }
 }

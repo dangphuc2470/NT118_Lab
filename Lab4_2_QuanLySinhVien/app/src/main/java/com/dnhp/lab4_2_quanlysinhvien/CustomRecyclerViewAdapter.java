@@ -109,7 +109,7 @@ public class CustomRecyclerViewAdapter extends RecyclerView.Adapter<CustomRecycl
         Student Student = arr.get(position);
 
 
-        viewHolder.getTvID().setText(String.valueOf(Student.getStudentId()));
+        viewHolder.getTvID().setText(Student.getStudentId());
         viewHolder.getTvName().setText(Student.getFullName());
         viewHolder.getTvClass().setText(Student.getClassName());
 

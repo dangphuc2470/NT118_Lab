@@ -17,9 +17,9 @@ public class Student
 
     public Student(){}
 
-    public int getStudentId()
+    public String getStudentId()
     {
-        return studentId;
+        return String.valueOf(studentId);
     }
 
     public void setStudentId(int studentId)
@@ -37,9 +37,9 @@ public class Student
         this.fullName = fullName;
     }
 
-    public int getYearOfBirth()
+    public String getYearOfBirth()
     {
-        return yearOfBirth;
+        return String.valueOf(yearOfBirth);
     }
 
     public void setYearOfBirth(int yearOfBirth)
