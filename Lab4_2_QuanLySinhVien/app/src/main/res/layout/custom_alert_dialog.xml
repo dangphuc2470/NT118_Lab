@@ -4,13 +4,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/constraint_alert"
     android:layout_width="match_parent"
-    android:layout_height="200dp"
+    android:layout_height="wrap_content"
     android:orientation="vertical"
     android:weightSum="2">
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="0dp"
+        android:layout_height="150dp"
         android:layout_weight="1.5"
         android:orientation="horizontal"
         android:weightSum="6">
@@ -19,11 +19,10 @@
             android:id="@+id/iv_alert"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_marginStart="@dimen/edgeMargin"
-            android:layout_marginTop="3dp"
-            android:layout_marginBottom="3dp"
+            android:layout_marginTop="0dp"
+            android:layout_marginBottom="0dp"
             android:layout_weight="2"
-            android:scaleType="centerCrop"
+            android:scaleType="centerInside"
             android:src="@drawable/unnamed_auto_x2" />
 
         <LinearLayout
@@ -71,34 +70,37 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="0dp"
+        android:layout_height="100dp"
         android:layout_weight="0.5"
         android:orientation="horizontal">
 
         <Button
             android:id="@+id/btModify"
-            android:layout_width="20dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/edgeMargin"
             android:layout_marginEnd="5dp"
             android:layout_weight="1"
-            android:text="Modify" />
+            android:text="Modify"
+            android:textSize="@dimen/smallTextSize" />
 
         <Button
             android:id="@+id/btDelete"
-            android:layout_width="20dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Delete" />
+            android:text="Delete"
+            android:textSize="@dimen/smallTextSize" />
 
         <Button
             android:id="@+id/btCancel"
-            android:layout_width="30dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="60dp"
             android:layout_marginEnd="@dimen/edgeMargin"
             android:layout_weight="1"
-            android:text="Cancel" />
+            android:text="Cancel"
+            android:textSize="@dimen/smallTextSize" />
 
     </LinearLayout>
 
