@@ -10,15 +10,16 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="150dp"
+        android:layout_height="wrap_content"
         android:layout_weight="1.5"
         android:orientation="horizontal"
         android:weightSum="6">
 
         <ImageView
             android:id="@+id/iv_alert"
-            android:layout_width="0dp"
+            android:layout_width="200dp"
             android:layout_height="match_parent"
+            android:layout_marginStart="3dp"
             android:layout_marginTop="0dp"
             android:layout_marginBottom="0dp"
             android:layout_weight="2"
@@ -26,45 +27,69 @@
             android:src="@drawable/unnamed_auto_x2" />
 
         <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_marginBottom="3dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/edgeMargin"
+            android:layout_marginTop="@dimen/edgeMargin"
+            android:layout_marginBottom="@dimen/edgeMargin"
             android:layout_weight="5"
             android:orientation="vertical">
 
-            <TextView
-                android:id="@+id/tvID_alert"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="4dp"
-                android:text="@string/id"
-                android:textSize="20sp"
-                android:textStyle="bold" />
-
-            <TextView
-                android:id="@+id/tvName_alert"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="16dp"
-                android:text="@string/name" />
-
-            <TextView
-                android:id="@+id/tvClass_alert"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="16dp"
-                android:text="@string/_class" />
-
-            <TextView
-                android:id="@+id/tvYoB_alert"
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/RS_textInputLayout_ID"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="16dp"
-                android:text="@string/year_of_birth" />
+                android:layout_marginEnd="10dp">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/RS_et_ID"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/id"
+                    android:textSize="@dimen/smallTextSize" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/RS_textInputLayout_Name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/RS_et_Name"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/name"
+                    android:textSize="@dimen/smallTextSize" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/RS_textInputLayout_Class"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="10dp">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/RS_et_Class"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:hint="@string/_class"
+                    android:textSize="@dimen/smallTextSize" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/RS_textInputLayout_YoB"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/RS_et_YoB"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/year_of_birth"
+                    android:textSize="@dimen/smallTextSize" />
+
+            </com.google.android.material.textfield.TextInputLayout>
         </LinearLayout>
     </LinearLayout>
 
@@ -76,16 +101,29 @@
 
         <Button
             android:id="@+id/btModify"
+            style="@style/Widget.Material3.Button.OutlinedButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/edgeMargin"
-            android:layout_marginEnd="5dp"
+            android:layout_marginStart="150dp"
+            android:layout_marginEnd="@dimen/edgeMargin"
             android:layout_weight="1"
-            android:text="Modify"
+            android:text="Apply changes"
             android:textSize="@dimen/smallTextSize" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginStart="@dimen/edgeMargin"
+        android:layout_marginEnd="@dimen/edgeMargin"
+        android:layout_marginBottom="@dimen/edgeMargin"
+        android:layout_weight="1.5"
+        android:orientation="horizontal">
 
         <Button
             android:id="@+id/btDelete"
+            style="@style/Widget.Material3.Button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -94,9 +132,9 @@
 
         <Button
             android:id="@+id/btCancel"
+            style="@style/Widget.Material3.Button.TextButton.Dialog"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="60dp"
             android:layout_marginEnd="@dimen/edgeMargin"
             android:layout_weight="1"
             android:text="Cancel"

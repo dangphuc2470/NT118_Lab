@@ -3,20 +3,16 @@ package com.dnhp.lab4_2_quanlysinhvien;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
-import android.content.DialogInterface;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.WindowManager;
 import android.widget.Toast;
 
 import com.dnhp.lab4_2_quanlysinhvien.databinding.ActivityMainBinding;
 import com.dnhp.lab4_2_quanlysinhvien.databinding.CustomAlertDialogBinding;
-import com.dnhp.lab4_2_quanlysinhvien.databinding.RecyclerViewItemBinding;
 
 import java.util.ArrayList;
 
@@ -26,7 +22,10 @@ public class MainActivity extends AppCompatActivity
     private Cursor cursor;
     private ArrayList<Student> students;
     private ActivityMainBinding AMBinding;
-    private CustomAlertDialogBinding alertDialogBinding;
+    private CustomAlertDialogBinding ADBinding;
+    private String selectedStudentPosistion;
+    private AlertDialog dialog;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -52,13 +51,16 @@ public class MainActivity extends AppCompatActivity
             arrayList.add(AMBinding.etYoB.getText().toString());
             arrayList.add(AMBinding.etClass.getText().toString());
 
-            if (databaseAdapter.checkIfIdExists(Integer.parseInt(arrayList.get(0))))
-            {
-                Toast.makeText(getApplicationContext(), "Dữ liệu bị trùng", Toast.LENGTH_SHORT).show();
-                return;
-            }
+
+
             try
             {
+                if (databaseAdapter.checkIfIdExists(Integer.parseInt(arrayList.get(0))))
+                {
+                    Toast.makeText(getApplicationContext(), "Dữ liệu bị trùng", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
                 Student student = new Student();
                 student.setStudentId(Integer.parseInt(arrayList.get(0)));
                 student.setFullName(arrayList.get(1));
@@ -72,6 +74,7 @@ public class MainActivity extends AppCompatActivity
 
                 databaseAdapter.createStudent(student);
                 students = getData();
+                Log.i("DB", databaseAdapter.getAllStudentIDs());
                 showData(students);
             } catch (NumberFormatException e)
             {
@@ -114,19 +117,16 @@ public class MainActivity extends AppCompatActivity
             public void onItemClick(int position)
             {
                 Student clickedItem = students.get(position);
+                selectedStudentPosistion = clickedItem.getStudentId();
                 showCustomAlertDialog(clickedItem);
             }
         });
         AMBinding.rsView.setAdapter(adapter);
 
-//        RecyclerView recyclerView = findViewById(R.id.rsView);
-//        CustomRecyclerViewAdapter adapter = new CustomRecyclerViewAdapter(students);
-//        recyclerView.setAdapter(adapter);
-//        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+
     }
 
 
-    private AlertDialog dialog;
 
     private void showCustomAlertDialog(Student student)
     {
@@ -134,19 +134,46 @@ public class MainActivity extends AppCompatActivity
         AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.CustomAlertDialogStyle);
         LayoutInflater inflater = getLayoutInflater();
         View dialogView = inflater.inflate(R.layout.custom_alert_dialog, null);
+        ADBinding = CustomAlertDialogBinding.bind(dialogView);
+        ADBinding.RSEtID.setText(student.getStudentId());
+        ADBinding.RSEtID.setFocusable(false);
+        ADBinding.RSEtID.setFocusableInTouchMode(false);
 
-        alertDialogBinding = CustomAlertDialogBinding.bind(dialogView);
-        alertDialogBinding.tvIDAlert.setText(student.getStudentId());
-        alertDialogBinding.tvNameAlert.setText(student.getFullName());
-        alertDialogBinding.tvYoBAlert.setText(student.getYearOfBirth());
-        alertDialogBinding.tvClassAlert.setText(student.getClassName());
-        alertDialogBinding.btCancel.setOnClickListener(v ->
+        ADBinding.RSEtName.setText(student.getFullName());
+        ADBinding.RSEtYoB.setText(student.getYearOfBirth());
+        ADBinding.RSEtClass.setText(student.getClassName());
+
+        ADBinding.btCancel.setOnClickListener(v ->
         {
-            Log.i("123", "showCustomAlertDialog: ");
-            Toast.makeText(getApplicationContext(), "Cancel", Toast.LENGTH_SHORT).show();
             dialog.dismiss(); // Dismiss the dialog when cancel button is clicked
         });
+        ADBinding.btDelete.setOnClickListener(v ->
+        {
+            databaseAdapter.deleteStudent(selectedStudentPosistion);
+            dialog.dismiss(); // Dismiss the dialog when cancel button is clicked
+            Log.i("DB", databaseAdapter.getAllStudentIDs());
+            students = getData();
+            showData(students);
+        });
+        ADBinding.btModify.setOnClickListener(v->
+        {
+            Student studentUpdate = new Student();
+            studentUpdate.setStudentId(Integer.parseInt(String.valueOf(ADBinding.RSEtID.getText())));
+            studentUpdate.setFullName(String.valueOf(ADBinding.RSEtName.getText()));
+            studentUpdate.setClassName(String.valueOf(ADBinding.RSEtClass.getText()));
+            studentUpdate.setYearOfBirth(Integer.parseInt(String.valueOf(ADBinding.RSEtYoB.getText())));
+            int rowAffected = databaseAdapter.updateStudent(studentUpdate);
+            if (rowAffected>=1)
+            {
+                Toast.makeText(getApplicationContext(), "Updated successfully!", Toast.LENGTH_SHORT).show();
+                ADBinding.btCancel.setText(R.string.done);
+            }
+            else
+                Toast.makeText(getApplicationContext(), "Update failed!", Toast.LENGTH_SHORT).show();
 
+            students = getData();
+            showData(students);
+        });
 
 
         builder.setView(dialogView);

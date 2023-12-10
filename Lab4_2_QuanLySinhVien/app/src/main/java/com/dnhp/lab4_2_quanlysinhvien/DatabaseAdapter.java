@@ -37,7 +37,6 @@ public class DatabaseAdapter
         dbHelper.close();
     }
 
-    //Todo: Sửa lại hết bên dưới
     public void createStudent(Student student)
     {
         ContentValues inititalValues = new ContentValues();
@@ -48,10 +47,32 @@ public class DatabaseAdapter
         sqLiteDatabase.insert(TABLE_NAME, null, inititalValues);
     }
 
-    public boolean deleteStudent(long rowId)
+    public int updateStudent(Student student)
     {
-        return sqLiteDatabase.delete(TABLE_NAME, COLUMN_ID + "=" + rowId,
-                null) > 0;
+        ContentValues updatedValues = new ContentValues();
+        updatedValues.put(COLUMN_NAME, student.getFullName());
+        updatedValues.put(COLUMN_YEAR_OF_BIRTH, student.getYearOfBirth());
+        updatedValues.put(COLUMN_CLASS_NAME, student.getClassName());
+
+        return sqLiteDatabase.update(TABLE_NAME, updatedValues, COLUMN_ID + " = ?",
+                new String[]{String.valueOf(student.getStudentId())});
+
+//        String sql = "UPDATE " + TABLE_NAME +
+//                " SET " + COLUMN_CLASS_NAME + " = '" + student.getClassName() + "', " +
+//                COLUMN_NAME + " = '" + student.getFullName() + "', " +
+//                COLUMN_YEAR_OF_BIRTH + " = " + student.getYearOfBirth() +
+//                " WHERE " + COLUMN_ID + " = " + student.getStudentId();
+//
+//        Log.i("DB","execute: "+ sql);
+//        sqLiteDatabase.execSQL(sql);
+    }
+
+
+
+    public void deleteStudent(String Id)
+    {
+        sqLiteDatabase.delete(TABLE_NAME, COLUMN_ID + "=" + Id,
+                null);
     }
 
     public void deleteAllStudents()
@@ -73,4 +94,23 @@ public class DatabaseAdapter
         cursor.close();
         return exists;
     }
+
+
+    //Logcat
+    public String getAllStudentIDs()
+    {
+        Cursor cursor = sqLiteDatabase.query(TABLE_NAME, new String[]{COLUMN_ID, COLUMN_CLASS_NAME}, null, null, null, null, null);
+        StringBuilder idStringBuilder = new StringBuilder();
+
+        while (cursor.moveToNext())
+        {
+            int studentID = cursor.getInt(cursor.getColumnIndexOrThrow(COLUMN_ID));
+            String studentClass = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_CLASS_NAME));
+            idStringBuilder.append(studentID).append(studentClass).append(", "); // Separating IDs with a comma
+        }
+
+        cursor.close();
+        return idStringBuilder.toString();
+    }
+
 }
