@@ -1,5 +1,7 @@
 package com.dnhp.lab6_1;
+
 import android.Manifest;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
@@ -31,9 +33,11 @@ public class MainActivity extends AppCompatActivity
         requestSmsPermission();
     }
 
-    private void requestSmsPermission() {
+    private void requestSmsPermission()
+    {
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.RECEIVE_SMS)
-                != PackageManager.PERMISSION_GRANTED) {
+                != PackageManager.PERMISSION_GRANTED)
+        {
             ActivityCompat.requestPermissions(this,
                     new String[]{Manifest.permission.RECEIVE_SMS},
                     MY_PERMISSIONS_REQUEST_RECEIVE_SMS);
@@ -76,7 +80,8 @@ public class MainActivity extends AppCompatActivity
 //    }
 
 
-    private void initBroadcastReceiver() {
+    private void initBroadcastReceiver()
+    {
         // Create filter to listen to incoming messages
         filter = new IntentFilter("android.provider.Telephony.SMS_RECEIVED");
 
@@ -84,12 +89,15 @@ public class MainActivity extends AppCompatActivity
         broadcastReceiver = new MySmsReceiver();
         broadcastReceiver.initTextView(findViewById(R.id.tv_content));
     }
+
     @Override
-    protected void onResume() {
+    protected void onResume()
+    {
         super.onResume();
 
         // Make sure broadcastReceiver was created
-        if (broadcastReceiver == null) {
+        if (broadcastReceiver == null)
+        {
             initBroadcastReceiver();
         }
 
@@ -98,10 +106,12 @@ public class MainActivity extends AppCompatActivity
     }
 
     @Override
-    protected void onStop() {
+    protected void onStop()
+    {
         super.onStop();
         // UnregisterReceiver when app is destroyed
-        if (broadcastReceiver != null) {
+        if (broadcastReceiver != null)
+        {
             unregisterReceiver(broadcastReceiver);
             broadcastReceiver = null; // Setting to null to avoid memory leaks
         }
@@ -109,14 +119,18 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
-                                           @NonNull int[] grantResults) {
+                                           @NonNull int[] grantResults)
+    {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
 
-        if (requestCode == MY_PERMISSIONS_REQUEST_RECEIVE_SMS) {
-            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+        if (requestCode == MY_PERMISSIONS_REQUEST_RECEIVE_SMS)
+        {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED)
+            {
                 // Permission granted, register BroadcastReceiver
                 registerReceiver(broadcastReceiver, filter);
-            } else {
+            } else
+            {
                 // Permission denied, show a message or handle accordingly
                 Toast.makeText(this, "SMS permission denied", Toast.LENGTH_SHORT).show();
             }

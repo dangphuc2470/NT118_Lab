@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
+import android.Manifest;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -39,15 +40,17 @@ public class MainActivity extends AppCompatActivity
     private final String AUTO_RESPONSE = "auto_response";
 
 
-    private void findViewsByIds() {
-        swAutoResponse = (Switch) findViewById(R.id.sw_auto_response);
-        llButtons = (LinearLayout) findViewById(R.id.ll_buttons);
-        lvMessages = (ListView) findViewById(R.id.lv_messages);
-        btnSafe = (Button) findViewById(R.id.btn_safe);
-        btnMayday = (Button) findViewById(R.id.btn_mayday);
+    private void findViewsByIds()
+    {
+        swAutoResponse = findViewById(R.id.sw_auto_response);
+        llButtons = findViewById(R.id.ll_buttons);
+        lvMessages = findViewById(R.id.lv_messages);
+        btnSafe = findViewById(R.id.btn_safe);
+        btnMayday = findViewById(R.id.btn_mayday);
     }
 
-    private void respond(String to, String response) {
+    private void respond(String to, String response)
+    {
         reentrantLock.lock();
         requesters.remove(to);
         adapter.notifyDataSetChanged();
@@ -58,27 +61,33 @@ public class MainActivity extends AppCompatActivity
         sms.sendTextMessage(to, null, response, null, null);
     }
 
-    public void respond(boolean ok) {
+    public void respond(boolean ok)
+    {
         String okString = getString(R.string.i_am_safe_and_well_worry_not);
         String notOkString = getString(R.string.tell_my_mother_i_love_her);
         String outputString = ok ? okString : notOkString;
 
         ArrayList<String> requestersCopy = (ArrayList<String>) requesters.clone();
-        for (String to : requestersCopy) {
+        for (String to : requestersCopy)
+        {
             respond(to, outputString);
         }
     }
 
-    public void processReceiveAddresses(ArrayList<String> addresses) {
-        for (int i = 0; i < addresses.size(); i++) {
-            if (!requesters.contains(addresses.get(i))) {
+    public void processReceiveAddresses(ArrayList<String> addresses)
+    {
+        for (int i = 0; i < addresses.size(); i++)
+        {
+            if (!requesters.contains(addresses.get(i)))
+            {
                 reentrantLock.lock();
                 requesters.add(addresses.get(i));
                 adapter.notifyDataSetChanged();
                 reentrantLock.unlock();
 
                 // Check to response automatically
-                if (swAutoResponse.isChecked()) {
+                if (swAutoResponse.isChecked())
+                {
                     respond(true);
                 }
             }
@@ -86,45 +95,39 @@ public class MainActivity extends AppCompatActivity
     }
 
 
-    private void handleOnClickListener() {
+    private void handleOnClickListener()
+    {
         // Handle onClickListener for btnSafe
-        btnSafe.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                respond(true);
-            }
-        });
+        btnSafe.setOnClickListener(view -> respond(true));
 
         // Handle onClickListener for btnMayday
-        btnMayday.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                respond(false);
-            }
-        });
+        btnMayday.setOnClickListener(view -> respond(false));
 
         // Set OnCheckedChangeListener for swAutoResponse
-        swAutoResponse.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (isChecked) {
-                    llButtons.setVisibility(View.GONE);
-                } else {
-                    llButtons.setVisibility(View.VISIBLE);
-                }
-
-                // Save auto response setting
-                editor.putBoolean(AUTO_RESPONSE, isChecked);
-                editor.commit();
-
+        swAutoResponse.setOnCheckedChangeListener((buttonView, isChecked) ->
+        {
+            if (isChecked)
+            {
+                llButtons.setVisibility(View.GONE);
+            } else
+            {
+                llButtons.setVisibility(View.VISIBLE);
             }
+
+            // Save auto response setting
+            editor.putBoolean(AUTO_RESPONSE, isChecked);
+            editor.commit();
+
         });
     }
 
-    private void initBroadcastReceiver() {
-        broadcastReceiver = new BroadcastReceiver() {
+    private void initBroadcastReceiver()
+    {
+        broadcastReceiver = new BroadcastReceiver()
+        {
             @Override
-            public void onReceive(Context context, Intent intent) {
+            public void onReceive(Context context, Intent intent)
+            {
                 // Get ArrayList addresses
                 ArrayList<String> addresses = intent.getStringArrayListExtra(SmsReceiver.SMS_MESSAGE_ADDRESS_KEY);
 
@@ -135,12 +138,14 @@ public class MainActivity extends AppCompatActivity
     }
 
     @Override
-    protected void onResume() {
+    protected void onResume()
+    {
         super.onResume();
         isRunning = true;
 
         // Make sure broadcastReceiver was initialized
-        if (broadcastReceiver == null) {
+        if (broadcastReceiver == null)
+        {
             initBroadcastReceiver();
         }
 
@@ -150,7 +155,8 @@ public class MainActivity extends AppCompatActivity
     }
 
     @Override
-    protected void onStop() {
+    protected void onStop()
+    {
         super.onStop();
         isRunning = false;
 
@@ -158,18 +164,20 @@ public class MainActivity extends AppCompatActivity
         unregisterReceiver(broadcastReceiver);
     }
 
-    private void initVariables() {
+    private void initVariables()
+    {
         sharedPreferences = getPreferences(MODE_PRIVATE);
         editor = sharedPreferences.edit();
         reentrantLock = new ReentrantLock();
-        requesters = new ArrayList<String>();
-        adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, requesters);
+        requesters = new ArrayList<>();
+        adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, requesters);
         lvMessages.setAdapter(adapter);
 
         // Load auto response setting
         boolean autoResponse = sharedPreferences.getBoolean(AUTO_RESPONSE, false);
         swAutoResponse.setChecked(autoResponse);
-        if (autoResponse) {
+        if (autoResponse)
+        {
             llButtons.setVisibility(View.GONE);
         }
 
@@ -178,13 +186,27 @@ public class MainActivity extends AppCompatActivity
 
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState)
+    {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         findViewsByIds();
         initVariables();
+        requestSmsPermission();
         handleOnClickListener();
     }
+    private static final int MY_PERMISSIONS_REQUEST_RECEIVE_SMS = 123; // Request code
+    private void requestSmsPermission()
+    {
+        if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.RECEIVE_SMS)
+                != PackageManager.PERMISSION_GRANTED)
+        {
+            ActivityCompat.requestPermissions(this,
+                    new String[]{Manifest.permission.RECEIVE_SMS},
+                    MY_PERMISSIONS_REQUEST_RECEIVE_SMS);
+        }
+    }
+
 
 //
 //    private void checkPermissions()
