@@ -20,6 +20,7 @@ import android.widget.CompoundButton;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.Switch;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.concurrent.locks.ReentrantLock;
@@ -59,6 +60,7 @@ public class MainActivity extends AppCompatActivity
         // Send the message
         SmsManager sms = SmsManager.getDefault();
         sms.sendTextMessage(to, null, response, null, null);
+        Toast.makeText(this, "To "+ to + "Message sent!", Toast.LENGTH_SHORT).show();
     }
 
     public void respond(boolean ok)
@@ -196,6 +198,7 @@ public class MainActivity extends AppCompatActivity
         handleOnClickListener();
     }
     private static final int MY_PERMISSIONS_REQUEST_RECEIVE_SMS = 123; // Request code
+    private static final int MY_PERMISSIONS_REQUEST_SEND_SMS = 123; // Request code
     private void requestSmsPermission()
     {
         if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.RECEIVE_SMS)
@@ -204,6 +207,14 @@ public class MainActivity extends AppCompatActivity
             ActivityCompat.requestPermissions(this,
                     new String[]{Manifest.permission.RECEIVE_SMS},
                     MY_PERMISSIONS_REQUEST_RECEIVE_SMS);
+        }
+
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.SEND_SMS)
+                != PackageManager.PERMISSION_GRANTED)
+        {
+            ActivityCompat.requestPermissions(this,
+                    new String[]{Manifest.permission.SEND_SMS},
+                    MY_PERMISSIONS_REQUEST_SEND_SMS);
         }
     }
 

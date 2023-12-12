@@ -107,26 +107,35 @@ public class SmsReceiver extends BroadcastReceiver
             }
         }
     }
-    public void onReceive2(Context context, Intent intent) {
+
+    public void onReceive2(Context context, Intent intent)
+    {
         String queryString = "Are you OK?".toLowerCase();
         Bundle bundle = intent.getExtras();
-        if (bundle != null) {
+        if (bundle != null)
+        {
             Object[] pdus = (Object[]) bundle.get("pdus");
-            if (pdus != null && pdus.length > 0) {
+            if (pdus != null && pdus.length > 0)
+            {
                 ArrayList<String> addresses = new ArrayList<>();
-                for (Object pdu : pdus) {
+                for (Object pdu : pdus)
+                {
                     SmsMessage smsMessage;
-                    if (Build.VERSION.SDK_INT >= 23) {
+                    if (Build.VERSION.SDK_INT >= 23)
+                    {
                         smsMessage = SmsMessage.createFromPdu((byte[]) pdu, "");
-                    } else {
+                    } else
+                    {
                         smsMessage = SmsMessage.createFromPdu((byte[]) pdu);
                     }
                     String messageBody = smsMessage.getMessageBody().toLowerCase();
-                    if (messageBody.contains(queryString)) {
+                    if (messageBody.contains(queryString))
+                    {
                         addresses.add(smsMessage.getOriginatingAddress());
                     }
                 }
-                if (addresses.size() > 0) {
+                if (addresses.size() > 0)
+                {
                     Intent forwardIntent = new Intent(SMS_FORWARD_BROADCAST_RECEIVER);
                     forwardIntent.putStringArrayListExtra(SMS_MESSAGE_ADDRESS_KEY, addresses);
                     context.sendBroadcast(forwardIntent);
