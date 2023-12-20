@@ -4,11 +4,13 @@ public class Dish
 {
     private String name;
     private Thumbnail thumbnail;
+    private boolean isFavorite = false;
 
-    public Dish(String name, Thumbnail thumbnail)
+    public Dish(String name, Thumbnail thumbnail, boolean isFavorite)
     {
         this.name = name;
         this.thumbnail = thumbnail;
+        this.isFavorite = isFavorite;
     }
 
     public String getName()
@@ -29,5 +31,15 @@ public class Dish
     public void setThumbnail(Thumbnail thumbnail)
     {
         this.thumbnail = thumbnail;
+    }
+
+    public boolean isFavorite()
+    {
+        return isFavorite;
+    }
+
+    public void setFavorite(boolean favorite)
+    {
+        isFavorite = favorite;
     }
 }

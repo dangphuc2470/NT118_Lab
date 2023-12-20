@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.Spinner;
@@ -73,9 +74,11 @@ public class MainActivity extends AppCompatActivity
         });
         EditText editText = findViewById(R.id.etName);
         Button btAdd = findViewById(R.id.btAddDish);
+        CheckBox checkBox = findViewById(R.id.cbPromotion);
         btAdd.setOnClickListener((v ->
         {
-            Dish dish = new Dish(editText.getText().toString(), thumbnails.get(selectedItemIndex));
+
+            Dish dish = new Dish(editText.getText().toString(), thumbnails.get(selectedItemIndex), checkBox.isChecked());
             dishes.add(dish);
             adapter.notifyDataSetChanged();
         }));

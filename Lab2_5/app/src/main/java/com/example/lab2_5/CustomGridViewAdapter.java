@@ -50,12 +50,15 @@ public class CustomGridViewAdapter extends BaseAdapter
             view = inflater.inflate(R.layout.grid_item, parent, false);
 
         }
-        Thumbnail thumbnail = dishes.get(position).getThumbnail();
+        Dish dish = dishes.get(position);
+        Thumbnail thumbnail = dish.getThumbnail();
         TextView nameTextView = view.findViewById(R.id.tvNameGrid);
         ImageView imageImageView = view.findViewById(R.id.ivThumbnailsGrid);
-
-        nameTextView.setText(dishes.get(position).getName());
+        nameTextView.setText(dish.getName());
         imageImageView.setImageResource(thumbnail.getImage());
+        ImageView starImgGrid = view.findViewById(R.id.starImgGrid);
+        if (dish.isFavorite())
+            starImgGrid.setImageResource(R.drawable.star_filled);
         return view;
     }
 }
