@@ -15,65 +15,21 @@ import java.util.ArrayList;
 
 public class CustomRecyclerViewAdapter extends RecyclerView.Adapter<CustomRecyclerViewAdapter.ViewHolder>
 {
+    public interface OnItemClickListener {
+        void onItemClick(Employee item);
+    }
 
     static ArrayList<Employee> arr;
-    public CustomRecyclerViewAdapter(ArrayList<Employee> dataSet)
+    private final OnItemClickListener listener;
+    public CustomRecyclerViewAdapter(ArrayList<Employee> dataSet, OnItemClickListener listener)
     {
         arr = dataSet;
+        this.listener = listener;
     }
 
-    public static void updateData(Employee e)
-    {
-        arr.add(e);
-    }
-
-    /**
-     * Provide a reference to the type of views that you are using
-     * (custom ViewHolder).
-     */
-    public static class ViewHolder extends RecyclerView.ViewHolder
-    {
-
-        private final TextView tvName;
-        private final TextView tvRole;
-        private final ImageView imageView;
-        private final LinearLayout linearLayout;
-
-        public ViewHolder(View view)
-        {
-            super(view);
-            // Define click listener for the ViewHolder's View
-
-            //textView = (TextView) view.findViewById(R.id.textViewRS);
-            //button = view.findViewById(R.id.buttonRS);
-            tvName = view.findViewById(R.id.item_employee_tv_fullname);
-            tvRole = view.findViewById(R.id.item_employee_tv_position);
-            imageView = view.findViewById(R.id.item_employee_iv_manager);
-            linearLayout = view.findViewById(R.id.item_employee_ll_parent);
-
-        }
-
-
-
-        public TextView getTextViewRole()
-        {
-            return tvRole;
-        }
-
-        public TextView getTextViewName()
-        {
-            return tvName;
-        }
-
-        public ImageView getImageView()
-        {
-            return imageView;
-        }
-
-        public View getLinearLayoutParent()
-        {
-            return linearLayout;
-        }
+    public void updateList(ArrayList<Employee> newList) {
+        this.arr = newList;
+        notifyDataSetChanged();
     }
 
     /**
@@ -101,6 +57,7 @@ public class CustomRecyclerViewAdapter extends RecyclerView.Adapter<CustomRecycl
 
         // Get element from your dataset at this position and replace the
         // contents of the view with that element
+        viewHolder.bind(arr.get(position), listener);
         Employee employee = arr.get(position);
 
 
@@ -142,5 +99,61 @@ public class CustomRecyclerViewAdapter extends RecyclerView.Adapter<CustomRecycl
     public int getItemCount()
     {
         return arr.size();
+    }
+
+
+    /**
+     * Provide a reference to the type of views that you are using
+     * (custom ViewHolder).
+     */
+    public static class ViewHolder extends RecyclerView.ViewHolder
+    {
+
+        private final TextView tvName;
+        private final TextView tvRole;
+        private final ImageView imageView;
+        private final LinearLayout linearLayout;
+
+        public ViewHolder(View view)
+        {
+            super(view);
+            // Define click listener for the ViewHolder's View
+
+            //textView = (TextView) view.findViewById(R.id.textViewRS);
+            //button = view.findViewById(R.id.buttonRS);
+            tvName = view.findViewById(R.id.item_employee_tv_fullname);
+            tvRole = view.findViewById(R.id.item_employee_tv_position);
+            imageView = view.findViewById(R.id.item_employee_iv_manager);
+            linearLayout = view.findViewById(R.id.item_employee_ll_parent);
+
+        }
+
+        public void bind(final Employee item, final OnItemClickListener listener) {
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override public void onClick(View v) {
+                    listener.onItemClick(item);
+                }
+            });
+        }
+
+        public TextView getTextViewRole()
+        {
+            return tvRole;
+        }
+
+        public TextView getTextViewName()
+        {
+            return tvName;
+        }
+
+        public ImageView getImageView()
+        {
+            return imageView;
+        }
+
+        public View getLinearLayoutParent()
+        {
+            return linearLayout;
+        }
     }
 }

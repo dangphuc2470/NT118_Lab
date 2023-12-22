@@ -8,11 +8,28 @@ import android.os.Bundle;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 
 public class MainActivity extends AppCompatActivity
 {
+    ArrayList<Employee> EmployeeList = new ArrayList<>();
+    CustomRecyclerViewAdapter adapter = new CustomRecyclerViewAdapter(EmployeeList, item ->
+    {
+        Iterator<Employee> iterator = EmployeeList.iterator();
+        while (iterator.hasNext())
+        {
+            Employee employee = iterator.next();
+            if (employee.getName().equals(item.getName()))
+            {
+                iterator.remove(); // Xóa phần tử thỏa mãn điều kiện
+            }
+        }
+        Toast.makeText(getApplicationContext(), "Delete " + item.getName(), Toast.LENGTH_LONG).show();
+        updateList(EmployeeList);
+    });
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -40,17 +57,15 @@ public class MainActivity extends AppCompatActivity
 //            adapterClass.notifyDataSetChanged();
 //        });
 
-        ArrayList<Employee> EmployeeList = new ArrayList<>();
         RecyclerView recyclerView = findViewById(R.id.rsclView);
-        CustomRecyclerViewAdapter adapter = new CustomRecyclerViewAdapter(EmployeeList);
+
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-
         Button btInput = findViewById(R.id.btInput);
-        btInput.setOnClickListener(v->
+        btInput.setOnClickListener(v ->
         {
-            EditText etID = (EditText)findViewById(R.id.etMaNV);
-            EditText etName = (EditText)findViewById(R.id.etTenNV);
+            EditText etID = (EditText) findViewById(R.id.etMaNV);
+            EditText etName = (EditText) findViewById(R.id.etTenNV);
             CheckBox cb = findViewById(R.id.checkBox);
 
             String id = etID.getText().toString();
@@ -71,6 +86,11 @@ public class MainActivity extends AppCompatActivity
 
         });
 
+    }
+
+    private void updateList(ArrayList<Employee> EmployeeList)
+    {
+        adapter.updateList(EmployeeList);
     }
 }
 
